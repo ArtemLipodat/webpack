@@ -1,7 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackSimpleIncludePlugin = require('html-webpack-simple-include-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const autoprefixer = require('autoprefixer');
+const fs = require('fs');
 
 
 module.exports = {
@@ -25,6 +26,16 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname,'src/index.html')
     }),
+    new HtmlWebpackSimpleIncludePlugin([
+      {
+        tag: '<include-header />',
+        content: fs.readFileSync(path.resolve(__dirname, "src/header.html"))
+      },
+      {
+        tag: '<include-footer />',
+        content: fs.readFileSync(path.resolve(__dirname, "src/footer.html"))
+      }
+    ]),
     new CleanWebpackPlugin(),
   ],
 
